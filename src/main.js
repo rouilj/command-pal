@@ -3,7 +3,7 @@ import pubsub from "micro-pubsub";
 
 class CommandPal {
   constructor(options) {
-    console.log("CommandPal", { options });
+    if (options.debugOutput) { console.log("CommandPal", { options });}
     this.options = options || {};
     this.ps = pubsub.create();
 
@@ -33,6 +33,7 @@ class CommandPal {
         placeholderText: this.options.placeholder || "What are you looking for?",
         hotkeysGlobal: this.options.hotkeysGlobal || false,
         reportStyleHash: this.options.reportStyleHash || false
+        debugOutput: this.options.debugOutput || false,
       },
     });
     const ctx = this;

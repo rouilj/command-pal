@@ -131,6 +131,7 @@ const c = new CommandPal({
   hotkey: "ctrl+space",  // Launcher shortcut
   hotkeysGlobal: true,       // Makes shortcut keys work in any <textarea>, <input> or <select>
   placeholder: "Custom placeholder text...", //  Changes placeholder text of input
+  debugOuput: false, // if true report debugging info to console
   reportStyleHash: false // if true, report the id and sha256 hashes
                          // of the svelt inlined style blocks. The hashes
                          // can be added to the CSP (Content Security Policy)

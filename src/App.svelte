@@ -18,6 +18,7 @@
   export let hotkeysGlobal;
   export let placeholderText;
   export let reportStyleHash;
+  export let debugOutput;
 
   const optionsFuse = {
     isCaseSensitive: false,
