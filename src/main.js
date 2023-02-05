@@ -34,7 +34,7 @@ class CommandPal {
         paletteId: this.options.paletteId || "CommandPalette",
         placeholderText: this.options.placeholder || "What are you looking for?",
         hotkeysGlobal: this.options.hotkeysGlobal || false,
-        reportStyleHash: this.options.reportStyleHash || false
+        reportStyleHash: this.options.reportStyleHash || false,
         debugOutput: this.options.debugOutput || false,
       },
     });
