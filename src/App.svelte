@@ -20,6 +20,7 @@
   export let reportStyleHash;
   export let debugOutput;
   export let paletteId = "CommandPalette";
+  export let noButton;
 
   const optionsFuse = {
     isCaseSensitive: false,
@@ -140,7 +141,9 @@
 </script>
 
 <div id={paletteId}>
+  { #if noButton == false }
   <MobileButton on:click={onMobileClick} bind:paletteId={paletteId} />
+  {/if}
   <PaletteContainer bind:show={showModal} bind:paletteId={paletteId}>
     <div slot="search">
       <SearchField

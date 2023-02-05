@@ -139,6 +139,8 @@ const c = new CommandPal({
                          // style-src or default-src if your app uses them.
                          // Requires a modified svelt/internal/index.mjs
                          // append() function.
+  noButton: false, // if true, do not generate mobile button
+
   commands: [
     // Commands go here
   ]
