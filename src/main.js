@@ -1,5 +1,6 @@
 import App from "./App.svelte";
 import pubsub from "micro-pubsub";
+import { retrieveDisplayPaletteMethod } from "./displayMethod";
 
 class CommandPal {
   constructor(options) {
@@ -39,6 +40,7 @@ class CommandPal {
         reportStyleHash: this.options.reportStyleHash || false,
       },
     });
+    this.displayPalette = retrieveDisplayPaletteMethod();
     const ctx = this;
     function subTo(eventName) {
       ctx.app.$on(eventName, (e) => ctx.ps.publish(eventName, e.detail));
