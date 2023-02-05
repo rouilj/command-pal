@@ -19,6 +19,7 @@
   export let placeholderText;
   export let reportStyleHash;
   export let debugOutput;
+  export let paletteId = "CommandPalette";
 
   const optionsFuse = {
     isCaseSensitive: false,
@@ -138,9 +139,9 @@
   }
 </script>
 
-<div>
-  <MobileButton on:click={onMobileClick} />
-  <PaletteContainer bind:show={showModal}>
+<div id={paletteId}>
+  <MobileButton on:click={onMobileClick} bind:paletteId={paletteId} />
+  <PaletteContainer bind:show={showModal} bind:paletteId={paletteId}>
     <div slot="search">
       <SearchField
         placeholderText={placeholderText}
