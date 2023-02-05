@@ -41,6 +41,8 @@ class CommandPal {
         paletteId: this.options.paletteId || "CommandPalette",
         placeholderText: this.options.placeholder || "What are you looking for?",
         reportStyleHash: this.options.reportStyleHash || false,
+        hotkeysGlobal: this.options.hotkeysGlobal || false,
+	displayHints: this.options.displayHints || false,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();
