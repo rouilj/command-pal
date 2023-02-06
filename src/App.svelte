@@ -32,7 +32,6 @@
   // Note: this should be the unicode equivalent of the Latin regexp:
   //    / \(\w[\s\w-]*\)$/
   let hintRegexp = / \([ \u0000-\u0019\u0021-\uFFFF_-]+\)$/u;
->>>>>>> command_aliases_with_hint
 
   const optionsFuse = {
     isCaseSensitive: false,
