@@ -20,8 +20,6 @@
   export let inputData = [];
   export let hotkeysGlobal;
   export let placeholderText;
-  export let reportStyleHash;
-  export let debugOutput;
   export let paletteId = "CommandPalette";
   export let noButton;
   export let displayHints;
