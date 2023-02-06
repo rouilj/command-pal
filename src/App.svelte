@@ -22,6 +22,7 @@
   export let placeholderText;
   export let hideButton;
   export let displayHints;
+  export let paletteId;
 
   // re: space '(' alphanumeric_word_char
   //            "0 or more word_char space/tab and -" ')'
