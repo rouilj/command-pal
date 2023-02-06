@@ -37,12 +37,12 @@ class CommandPal {
         hotkeysGlobal: this.options.hotkeysGlobal || false,
         hotkeysGlobal: this.options.hotkeysGlobal || false,
         inputData: this.options.commands || [],
-        noButton: this.options.noButton || false,
-        paletteId: this.options.paletteId || "CommandPalette",
-        placeholderText: this.options.placeholder || "What are you looking for?",
         reportStyleHash: this.options.reportStyleHash || false,
-        hotkeysGlobal: this.options.hotkeysGlobal || false,
 	displayHints: this.options.displayHints || false,
+        paletteId: this.options.id || "CommandPal",
+        placeholderText: this.options.placeholder || "What are you looking for?",
+        hotkeysGlobal: this.options.hotkeysGlobal || false,
+        hideButton: this.options.hideButton || false,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();

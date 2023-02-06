@@ -20,8 +20,7 @@
   export let inputData = [];
   export let hotkeysGlobal;
   export let placeholderText;
-  export let paletteId = "CommandPalette";
-  export let noButton;
+  export let hideButton;
   export let displayHints;
 
   // re: space '(' alphanumeric_word_char
@@ -147,7 +146,7 @@
       i.hinted = false
     }})
   }
-  
+
   function hintMatch(i) {
     // get a series of range matches for the characters. [0,0] indicates
     // first char of term matched. So it counts for 1.5 point. [6,7]
@@ -221,10 +220,10 @@
 </script>
 
 <div id={paletteId}>
-  { #if noButton == false }
-  <MobileButton on:click={onMobileClick} bind:paletteId={paletteId} />
+  {#if !hideButton}
+    <MobileButton on:click={onMobileClick} />
   {/if}
-  <PaletteContainer bind:show={showModal} bind:paletteId={paletteId}>
+  <PaletteContainer bind:show={showModal}>
     <div slot="search">
       <SearchField
         placeholderText={placeholderText}
