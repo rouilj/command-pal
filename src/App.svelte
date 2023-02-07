@@ -58,10 +58,12 @@
   let items = inputData;
   let itemsFiltered = inputData;
   let fuse = new Fuse(items, optionsFuse);
+  let focusedElement;
 
   onMount(() => {
     initShortCuts(hotkeysGlobal);
     setMainShortCut(hotkey, async () => {
+      focusedElement = document.activeElement
       showModal = true;
       selectedIndex = 0;
       dispatch("opened");
@@ -233,6 +235,7 @@
     removeHints(inputData);
     setItems(inputData);
     showModal = false;
+    focusedElement.focus()
   }
 
   function onMobileClick(e) {
