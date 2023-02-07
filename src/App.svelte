@@ -25,13 +25,6 @@
   export let paletteId;
   export let debugOutput;
 
-  // re: space '(' alphanumeric_word_char
-  //            "0 or more word_char space/tab and -" ')'
-  //            end of line
-  // Note: this should be the unicode equivalent of the Latin regexp:
-  //    / \(\w[\s\w-]*\)$/
-  let hintRegexp = / \([ \u0000-\u0019\u0021-\uFFFF_-]+\)$/u;
-
   const optionsFuse = {
     isCaseSensitive: false,
     shouldSort: true,
@@ -152,7 +145,7 @@
   function removeHints(items) {
     if (! displayHints ) return;
     items.map( (i) => { if ( i.hinted ) {
-      i.name = i.name.replace(hintRegexp, '');
+      i.name = i.name.replace(/ \(\w[\s\w-]*\)$/, '');
       i.hinted = false
     }})
   }
@@ -184,13 +177,17 @@
       if (! hinted) {
 	i.item.name += hint
       } else {
-	i.item.name = i.item.name.replace(hintRegexp, hint)
+	// re: space '(' alphanumeric_word_char
+	//            "0 or more word_char space char and -" ')'
+	//            end of line
+	// Note: this will not work for non-latin.
+	i.item.name = i.item.name.replace(/ \(\w[\s\w-]*\)$/, hint)
       }
       i.item.hinted = true
     } else {
       if (i.item.hinted) {
 	/* remove previous hints */
-	i.item.name = i.item.name.replace(hintRegexp, '')
+	i.item.name = i.item.name.replace(/ \(\w[\s\w-]*\)$/, '')
 	i.item.hinted = false
       }
     }
