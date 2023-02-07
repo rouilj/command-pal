@@ -37,9 +37,10 @@
       // This buckets similar commands together and makes the order of
       // the commands in the commands array have more effect on filtered
       // order. 0.05 is just a magic number that worked in testing, YMMV.
+      // Note this never returns 0 because equal scores sort by order.
       return ( Math.abs (a.score - b.score) < 0.05 ?
-	       (a.idx < b.idx ? -1 : 1) :
-	       a.score < b.score ? -1 : 1)
+	       (a.idx < b.idx ? -1 : 1) :  // sort by order in commands array
+	       a.score < b.score ? -1 : 1) // sort by lowest score first
     },
   };
 
@@ -150,7 +151,8 @@
     }})
   }
 
-  function hintMatch(i) {
+  /** append best aliases match to command object's name */
+  function hintMatch(search_result) {
     // get a series of range matches for the characters. [0,0] indicates
     // first char of term matched. So it counts for 1.5 point. [6,7]
     // indicating 2 chars match counts for 2 points.
@@ -161,7 +163,7 @@
 	((range[1] - range[0]) * 2.5) + 1
      ).reduce((sum, val) => sum+val))
     
-    const e = i.matches.filter(i => i.key === "aliases").sort((a,b) => {
+    const e = search_result.matches.filter(i => i.key === "aliases").sort((a,b) => {
       let a_mi = match_index(a)
       let b_mi = match_index(b)
       // match_index describes number of matches characters current
@@ -170,43 +172,43 @@
       // at lower indexes. So the lower the better.
       return a_mi == b_mi? a.refIndex > b.refIndex : a_mi < b_mi
     })
-    let hinted = !!i.item.hinted
+    let hinted = !!search_result.item.hinted
     if ( e.length ) {
       /* add hints */
       const hint = ` (${e[0].value})`
       if (! hinted) {
-	i.item.name += hint
+	search_result.item.name += hint
       } else {
 	// re: space '(' alphanumeric_word_char
 	//            "0 or more word_char space char and -" ')'
 	//            end of line
 	// Note: this will not work for non-latin.
-	i.item.name = i.item.name.replace(/ \(\w[\s\w-]*\)$/, hint)
+	search_result.item.name = search_result.item.name.replace(/ \(\w[\s\w-]*\)$/, hint)
       }
-      i.item.hinted = true
+      search_result.item.hinted = true
     } else {
-      if (i.item.hinted) {
+      if (search_result.item.hinted) {
 	/* remove previous hints */
-	i.item.name = i.item.name.replace(/ \(\w[\s\w-]*\)$/, '')
-	i.item.hinted = false
+	search_result.item.name = search_result.item.name.replace(/ \(\w[\s\w-]*\)$/, '')
+	search_result.item.hinted = false
       }
     }
     if (debugOutput) {
-      console.group("CommandPal " + i.item.name);
-      console.debug('score', i.score)
-      console.debug('index', i.refIndex)
-      console.debug('weight', i.item.weight)
+      console.group("CommandPal " + search_result.item.name);
+      console.debug('score', search_result.score)
+      console.debug('index', search_result.refIndex)
+      console.debug('weight', search_result.item.weight)
       console.debug('hints', e.length)
-      console.table(i.matches.filter( (i) => {
+      console.table(search_result.matches.filter( (i) => {
 	if (i.key ==="aliases") {
 	  i.sum = match_index(i);
 	  return true;
 	}
 	return false;
       }))
-      console.groupEnd("CommandPal " + i.item.name);
+      console.groupEnd("CommandPal " + search_result.item.name);
     }
-    return i.item
+    return search_result.item
   }
 
   function onTextChange(e) {
