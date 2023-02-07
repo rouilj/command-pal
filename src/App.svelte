@@ -194,7 +194,7 @@
       }
     }
     if (debugOutput) {
-      console.group(i.item.name);
+      console.group("CommandPal " + i.item.name);
       console.debug('score', i.score)
       console.debug('index', i.refIndex)
       console.debug('weight', i.item.weight)
@@ -206,7 +206,7 @@
 	}
 	return false;
       }))
-      console.groupEnd(i.item.name);
+      console.groupEnd("CommandPal " + i.item.name);
     }
     return i.item
   }
@@ -223,9 +223,9 @@
       removeHints(itemsFiltered);
     } else {
       const fuseResult = fuse.search(text);
-      if (debugOutput && displayHints) console.groupCollapsed("search: " + text)
+      if (debugOutput && displayHints) console.groupCollapsed("CommandPal search: " + text)
       itemsFiltered = fuseResult.map(processResult);
-      if (debugOutput && displayHints) console.groupEnd("search: " + text)
+      if (debugOutput && displayHints) console.groupEnd("CommandPal search: " + text)
     }
   }
 
