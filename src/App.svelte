@@ -23,6 +23,7 @@
   export let hideButton;
   export let displayHints;
   export let paletteId;
+  export let debugOutput;
 
   // re: space '(' alphanumeric_word_char
   //            "0 or more word_char space/tab and -" ')'
@@ -35,6 +36,7 @@
     isCaseSensitive: false,
     shouldSort: true,
     keys: ["name", "description", {name: "aliases", weight: 2}],
+    includeScore: true,
     includeMatches: true,
     sortFn: function (a,b) {
       // This is the same stable sorting function supplied by fuse.
@@ -185,6 +187,21 @@
 	i.item.hinted = false
       }
     }
+    if (debugOutput) {
+      console.group(i.item.name);
+      console.debug('score', i.score)
+      console.debug('index', i.refIndex)
+      console.debug('weight', i.item.weight)
+      console.debug('hints', e.length)
+      console.table(i.matches.filter( (i) => {
+	if (i.key ==="aliases") {
+	  i.sum = match_index(i);
+	  return true;
+	}
+	return false;
+      }))
+      console.groupEnd(i.item.name);
+    }
     return i.item
   }
 
@@ -200,7 +217,9 @@
       removeHints(itemsFiltered);
     } else {
       const fuseResult = fuse.search(text);
+      if (debugOutput && displayHints) console.groupCollapsed("search: " + text)
       itemsFiltered = fuseResult.map(processResult);
+      if (debugOutput && displayHints) console.groupEnd("search: " + text)
     }
   }
 
