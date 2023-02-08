@@ -43,6 +43,7 @@ class CommandPal {
         placeholderText: this.options.placeholder || "What are you looking for?",
         hotkeysGlobal: this.options.hotkeysGlobal || false,
         hideButton: this.options.hideButton || false,
+        footerText: this.options.footerText ||  null,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();
