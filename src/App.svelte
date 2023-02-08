@@ -206,7 +206,7 @@
       console.debug('weight', search_result.item.weight)
       console.debug('hints', e.length)
       console.table(search_result.matches.filter( (i) => {
-	if (i.key ==="aliases") {
+	if (i.key === "aliases") {
 	  i.sum = match_index(i);
 	  return true;
 	}
