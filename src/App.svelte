@@ -38,9 +38,12 @@
       // the commands in the commands array have more effect on filtered
       // order. 0.05 is just a magic number that worked in testing, YMMV.
       // Note this never returns 0 because equal scores sort by order.
-      return ( Math.abs (a.score - b.score) < 0.05 ?
+      return ((a.score > 0.009 && b.score > 0.009) && // if scores > minimum
+      	       Math.abs (a.score - b.score) < 0.05 ?  // bucket them
 	       (a.idx < b.idx ? -1 : 1) :  // sort by order in commands array
-	       a.score < b.score ? -1 : 1) // sort by lowest score first
+	       (a.score == b.score ?  // scores equal
+	       		(a.idx < b.idx ? -1 : 1) : // sort by index order
+	       		a.score < b.score ? -1 : 1)) // sort lowest score first
     },
   };
 
