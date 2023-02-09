@@ -32,20 +32,19 @@ class CommandPal {
     this.app = new App({
       target: document.body,
       props: {
+        // # of consecutive backspaces to exit. 0: don't exit on backspace.
+        backspaceCloseCount: this.options.backspaceCloseCount || 0,
         debugOutput: this.options.debugOutput || false,
+        displayHints: this.options.displayHints || false,
+        footerText: this.options.footerText ||  null,
+        hideButton: this.options.hideButton || false,
         hotkey: this.options.hotkey || 'ctrl+space',
         hotkeysGlobal: this.options.hotkeysGlobal || false,
-        hotkeysGlobal: this.options.hotkeysGlobal || false,
         inputData: this.options.commands || [],
-        reportStyleHash: this.options.reportStyleHash || false,
-	displayHints: this.options.displayHints || false,
+        orderedCommands: this.options.orderedCommands || false,
         paletteId: this.options.id || "CommandPal",
         placeholderText: this.options.placeholder || "What are you looking for?",
-        hotkeysGlobal: this.options.hotkeysGlobal || false,
-        hideButton: this.options.hideButton || false,
-        footerText: this.options.footerText ||  null,
-        // # of consecutive backspaces to exit. 0: don't exit on backspace.
-        backspaceCloseCount: this.options.backspaceCloseCount || 0
+        reportStyleHash: this.options.reportStyleHash || false,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();
