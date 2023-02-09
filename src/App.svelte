@@ -165,58 +165,78 @@
 
   /** append best aliases match to command object's name */
   function hintMatch(search_result) {
-    // get a series of range matches for the characters. [0,0] indicates
-    // first char of term matched. So it counts for 1.5 point. [6,7]
-    // indicating 2 chars match counts for 2 points.
-    let match_index = (a) => ( a.indices.map(
+    /**
+     * Accepts an array of 2 element arrays. These are the start/stop
+     * that matched the search term for the current match. A metric
+     * is calculated from these. Larger values indicate better matches.
+     *
+     * @param {array} indexList - list of 2 element lists
+     * 
+     * For each index_list use the [start, end] range to calculate a
+     * score. [0,*] indicates first char of term matched. It counts
+     * for an additional 0.5 points. Each multi character match [6,7]
+     * (2 chars) counts for 2.5 points/char. All numbers are magic
+     * weighting factors that seem to work. Formula and number may
+     * change.
+    */
+    let match_metric = (indices) => ( indices.map(
       range => range[0] == 0 ?
 	((range[1] - range[0])
 	 * 2.5) + 1.5 :
 	((range[1] - range[0]) * 2.5) + 1
      ).reduce((sum, val) => sum+val))
     
-    const e = search_result.matches.filter(i => i.key === "aliases").sort((a,b) => {
-      let a_mi = match_index(a)
-      let b_mi = match_index(b)
-      // match_index describes number of matches characters current
-      // search term matches. So the higher the better.
-      // assume alias array referenced by refIndex has higher prio
-      // at lower indexes. So the lower the better.
-      return a_mi == b_mi? a.refIndex > b.refIndex : a_mi < b_mi
-    })
-    let hinted = !!search_result.item.hinted
+    const e = search_result.matches.filter(
+      i => i.key === "aliases").sort((a,b) => {
+	let a_mm = match_metric(a.indices)
+	let b_mm = match_metric(b.indices)
+
+	// a higher match_metric is assigned to a term that is a
+	// better match for the search.
+	// Sort by higher match_metric. If match_metrics are equal,
+	// sort the one with the lower index in the aliases array
+	// first. (Put the best choice aliases first.)
+	//    1 - sort b before a; -1 sort a before b.
+	// note: a.refIndex can never equal b.refIndex
+	return a_mm == b_mm ?
+      	  (a.refIndex < b.refIndex ? -1 : 1) :
+          ( a_mm > b_mm? -1 : 1)
+      })
+
+    let item = search_result.item
+    let hinted = !!item.hinted
     if ( e.length ) {
       /* add hints */
       const hint = ` (${e[0].value})`
       if (! hinted) {
-	search_result.item.name += hint
+	item.name += hint
       } else {
-	search_result.item.name = search_result.item.name.replace(hintRegexp, hint)
+	item.name = item.name.replace(hintRegexp, hint)
       }
-      search_result.item.hinted = true
+      item.hinted = true
     } else {
-      if (search_result.item.hinted) {
+      if (item.hinted) {
 	/* remove previous hints */
-	search_result.item.name = search_result.item.name.replace(hintRegexp, '')
-	search_result.item.hinted = false
+	item.name = item.name.replace(hintRegexp, '')
+	item.hinted = false
       }
     }
     if (debugOutput) {
-      console.group("CommandPal " + search_result.item.name);
+      console.group("CommandPal " + item.name);
       console.debug('score', search_result.score)
       console.debug('index', search_result.refIndex)
-      console.debug('weight', search_result.item.weight)
+      console.debug('weight', item.weight)
       console.debug('hints', e.length)
       console.table(search_result.matches.filter( (i) => {
 	if (i.key === "aliases") {
-	  i.sum = match_index(i);
+	  i.metric = match_metric(i.indices);
 	  return true;
 	}
 	return false;
       }))
-      console.groupEnd("CommandPal " + search_result.item.name);
+      console.groupEnd("CommandPal " + item.name);
     }
-    return search_result.item
+    return item
   }
 
   function onTextChange(e) {
@@ -231,9 +251,11 @@
       removeHints(itemsFiltered);
     } else {
       const fuseResult = fuse.search(text);
-      if (debugOutput && displayHints) console.groupCollapsed("CommandPal search: " + text)
+      if (debugOutput && displayHints) console.groupCollapsed(
+        "CommandPal search: " + text)
       itemsFiltered = fuseResult.map(processResult);
-      if (debugOutput && displayHints) console.groupEnd("CommandPal search: " + text)
+      if (debugOutput && displayHints) console.groupEnd(
+        "CommandPal search: " + text)
     }
   }
 
