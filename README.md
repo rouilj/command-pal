@@ -143,6 +143,10 @@ const c = new CommandPal({
   displayHints: false,  // if true, aliases are displayed as command hints
   footerText: null,  // Text to display in the footer of the palette.
                      // If null (default), do not add footer.
+  backspaceCloseCount: 0, // this number of backspaces typed in an
+                          // empty search input will close, command-pal.
+                          // Allows closing with keyboard on mobile devices.
+                          // Default value of 0 prevents closing on backspace.
   commands: [
     // Commands go here
   ]

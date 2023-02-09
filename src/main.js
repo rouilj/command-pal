@@ -44,6 +44,8 @@ class CommandPal {
         hotkeysGlobal: this.options.hotkeysGlobal || false,
         hideButton: this.options.hideButton || false,
         footerText: this.options.footerText ||  null,
+        // # of consecutive backspaces to exit. 0: don't exit on backspace.
+        backspaceCloseCount: this.options.backspaceCloseCount || 0
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();

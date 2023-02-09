@@ -25,6 +25,7 @@
   export let paletteId;
   export let debugOutput;
   export let footerText;
+  export let backspaceCloseCount;
 
   // re: space '(' alphanumeric_word_char
   //            "0 or more word_char space/tab and -" ')'
@@ -264,6 +265,7 @@
     <div slot="search">
       <SearchField
         placeholderText={placeholderText}
+        backspaceCloseCount={backspaceCloseCount}
         show={showModal}
         bind:inputEl={searchField}
         on:closed={onClosed}
