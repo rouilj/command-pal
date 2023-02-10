@@ -57,6 +57,10 @@
       currentBackspaceCount = 0;
       setElFeedback('')
       dispatch("arrowup");
+    } else if (keyCode === "backspace" && e.shiftKey) {
+      inputValue = "";
+      currentBackspaceCount = 0;
+      setElFeedback('')
     } else if (keyCode === "backspace" && backspaceCloseCount) {
       // empty input: undefined if just opened, if keys added/deleted is ''
       if (inputValue === undefined || inputValue === '' ){
