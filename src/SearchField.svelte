@@ -137,6 +137,7 @@
   on:keydown={onKeyDown}
   on:input={onTextChanged}
   autocomplete="no"
+  autocapitalize="no"
   type="text"
   placeholder={placeholderText} />
 <div id={inputName + '-feedback'} class="search-feedback"></div>
