@@ -25,7 +25,7 @@
   export let paletteId: string;
   export let debugOutput: boolean;
   export let footerText: string;
-  export let backspaceCloseCount: integer;
+  export let backspaceCloseCount: number;
   export let orderedCommands: boolean;
 
   // re: space '(' alphanumeric_word_char
@@ -78,7 +78,7 @@
     initShortCuts(hotkeysGlobal);
     setMainShortCut(hotkey, async () => {
       if (showModal) {
-      	onClosed()
+        onClosed()
       } else {
         focusedElement = document.activeElement
         showModal = true;
@@ -243,7 +243,7 @@
 	}
 	return false;
       }))
-      console.groupEnd("CommandPal " + item.name);
+      console.groupEnd();
     }
     return item
   }
@@ -263,8 +263,7 @@
       if (debugOutput && displayHints) console.groupCollapsed(
         "CommandPal search: " + text)
       itemsFiltered = fuseResult.map(processResult);
-      if (debugOutput && displayHints) console.groupEnd(
-        "CommandPal search: " + text)
+      if (debugOutput && displayHints) console.groupEnd()
     }
   }
 
