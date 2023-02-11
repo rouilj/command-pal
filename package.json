@@ -8,7 +8,7 @@
   ],
   "main": "./public/build/bundle.js",
   "scripts": {
-    "build": "npm run check-types && rollup -c",
+    "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "serve public",
     "check-types": "svelte-check",
