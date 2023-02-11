@@ -97,6 +97,7 @@
       }
     });
     setAllShortCuts(inputData, async command => {
+      focusedElement = document.activeElement
       showModal = true;
       dispatch("opened");
       await asyncTimeout(200);
