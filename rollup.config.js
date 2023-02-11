@@ -9,10 +9,11 @@ const production = !process.env.ROLLUP_WATCH;
 export default {
 	input: 'src/main.js',
 	output: {
-		sourcemap: !production,
+		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+          file: (!production ? 'public/build/bundle.js' :
+		 'public/build/command-pal.js')
 	},
 	plugins: [
 		svelte({
