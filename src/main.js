@@ -49,6 +49,7 @@ class CommandPal {
         displayHints: this.options.displayHints || false,
         orderedCommands: this.options.orderedCommands || false,
         debugOutput: this.options.debugOutput || false,
+        headerText: this.options.headerText || null,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();

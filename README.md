@@ -147,6 +147,8 @@ const c = new CommandPal({
                           // empty search input will close, command-pal.
                           // Allows closing with keyboard on mobile devices.
                           // Default value of 0 prevents closing on backspace.
+  headerText: null,  // Text to display in the header of the palette.
+                     // If null (default), do not add header.
   commands: [
     // Commands go here
   ]
