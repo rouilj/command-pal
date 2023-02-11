@@ -44,7 +44,11 @@ class CommandPal {
         orderedCommands: this.options.orderedCommands || false,
         paletteId: this.options.id || "CommandPal",
         placeholderText: this.options.placeholder || "What are you looking for?",
-        reportStyleHash: this.options.reportStyleHash || false,
+        hotkeysGlobal: this.options.hotkeysGlobal || false,
+        hideButton: this.options.hideButton || false,
+        displayHints: this.options.displayHints || false,
+        orderedCommands: this.options.orderedCommands || false,
+        debugOutput: this.options.debugOutput || false,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();
