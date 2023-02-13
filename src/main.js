@@ -1,6 +1,13 @@
 import App from "./App.svelte";
 import pubsub from "micro-pubsub";
 
+let appApi = {
+  Fuse: null,
+  displayPalette: null,
+  focusedElement: null,
+  hotkeysGlobal: null,
+};
+
 class CommandPal {
   constructor(options) {
     if (options.debugOutput) { console.log("CommandPal", { options });}
@@ -19,6 +26,7 @@ class CommandPal {
         placeholderText: this.options.placeholder || "What are you looking for?",
         hotkeysGlobal: this.options.hotkeysGlobal || false,
         hideButton: this.options.hideButton || false,
+        appApi: appApi,
       },
     });
     const ctx = this;
@@ -34,6 +42,9 @@ class CommandPal {
         item.handler();
       }
     });
+    // only allow access to appApi if debugging is turned on
+    if (! this.options.debugOutput) { delete(this.appApi);}
+
   }
 
   subscribe(eventName, cb) {
@@ -43,6 +54,27 @@ class CommandPal {
   destroy() {
     this.app.$destroy()
   }
+
+  display(state) { appApi.displayPalette(state) }
+  
+  /* use setter/getter on (virtual) property */
+  get focusedElement() {
+    return appApi.focusedElement()
+  }
+
+  set focusedElement(newElement) {
+    return appApi.focusedElement(newElement)
+  }
+
+  get Fuse() { return appApi.Fuse }
+
+  // only available if debugOutput is defined
+  appApi = appApi;
+
+  hotkeysGlobal = (enable = true) => {
+    appApi.hotkeysGlobal(enable);
+  }
+  
 }
 
 export default CommandPal;

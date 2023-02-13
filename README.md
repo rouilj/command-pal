@@ -142,6 +142,26 @@ const c = new CommandPal({
 c.start()
 // Destroy the instance
 c.destroy()
+// what element had focus when command-pal was activated
+f = c.focusedElement
+// change the element command-pal will focus on when deactivated
+c.focusedElement = document.querySelector('input')
+// display/activate command-pal
+c.display(true)
+// deactivate/close command-pal
+c.display(false)
+// toggle active/deactive state
+c.display()
+// dynamically enable hotkeysGlobal setting (true is default)
+c.hotkeysGlobal(true)
+// dynamically disable hotkeysGlobal setting
+c.hotkeysGlobal(false)
+// disable all hotkeys
+hotkeys.filter = () => {return false;}
+// re-enable them globally
+c.hotkeysGlobal(true)
+// create a new instance of the fuse.js fuzzy search library
+fuse = new c.Fuse(...)
 ```
 
 ### Subscribe to events

@@ -19,6 +19,7 @@
   export let placeholderText: string;
   export let hideButton: boolean;;
   export let paletteId: string;
+  export let appApi: any;
 
   const optionsFuse = {
     isCaseSensitive: false,
@@ -34,6 +35,26 @@
   let itemsFiltered = inputData;
   let fuse = new Fuse(items, optionsFuse);
   let focusedElement;
+
+  /* allow main to access internal App state an libraries */
+  appApi.Fuse = Fuse;
+
+  appApi.displayPalette = async active_state => {
+    if (! showModal) {focusedElement = document.activeElement}
+    if (active_state === undefined) {
+      showModal = !showModal;
+    } else if ([true, false].includes(active_state)) {
+      showModal = active_state;
+    } else {
+      throw("Non-boolean: " + active_state +
+            " - passed to displayPalette")
+    }
+  }
+
+  appApi.focusedElement = (newValue) => (
+    newValue ? focusedElement = newValue : focusedElement )
+
+  appApi.hotkeysGlobal = initShortCuts
 
   onMount(() => {
     initShortCuts(hotkeysGlobal);

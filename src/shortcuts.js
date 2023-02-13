@@ -3,6 +3,9 @@ import hotkeys from "hotkeys-js";
 export const asyncTimeout = ms => new Promise(res => setTimeout(res, ms));
 
 export function initShortCuts(bindToInputsToo) {
+  // Exposed to user via appApi. Keep signature stable or modify
+  // App.svelte appApi binding to compensate.
+
   // create a closure over bindToInputsToo
   hotkeys.filter = function(event){
     // no filtering
