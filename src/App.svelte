@@ -28,6 +28,7 @@
   export let footerText: string;
   export let backspaceCloseCount: number;
   export let orderedCommands: boolean;
+  export let appApi: any;
 
   // re: space '(' alphanumeric_word_char
   //            "0 or more word_char space/tab and -" ')'
@@ -75,6 +76,27 @@
   let fuse = new Fuse(items, optionsFuse);
   let focusedElement: HTMLElement | null = null;
   let focusedElementFocusVisible = { visible: false };
+
+  /* allow main to access internal App state an libraries */
+  appApi.Fuse = Fuse;
+
+  appApi.displayPalette = async active_state => {
+    if (! showModal) {focusedElement = document.activeElement}
+    if (active_state === undefined) {
+      showModal = !showModal;
+    } else if ([true, false].includes(active_state)) {
+      showModal = active_state;
+    } else {
+      throw("Non-boolean: " + active_state +
+            " - passed to displayPalette")
+    }
+  }
+
+  appApi.focusedElement = (newValue) => (
+    newValue ? focusedElement = newValue : focusedElement )
+  appApi.focusedElementFocusVisible = focusedElementFocusVisible
+
+  appApi.hotkeysGlobal = initShortCuts
 
   onMount(() => {
     initShortCuts(hotkeysGlobal);

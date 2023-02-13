@@ -2,6 +2,14 @@ import App from "./App.svelte";
 import pubsub from "micro-pubsub";
 import { retrieveDisplayPaletteMethod } from "./displayMethod";
 
+let appApi = {
+  Fuse: null,
+  displayPalette: null,              // cp.display()
+  focusedElement: null,              // cp.focusedElement set/get
+  focusedElementFocusVisible: null,  // not exposed by CommandPal.
+  hotkeysGlobal: null,               // cp.hotkeysGlobal()
+};
+
 class CommandPal {
   constructor(options) {
     if (options.debugOutput) { console.log("CommandPal", { options });}
@@ -50,6 +58,7 @@ class CommandPal {
         orderedCommands: this.options.orderedCommands || false,
         debugOutput: this.options.debugOutput || false,
         headerText: this.options.headerText || null,
+        appApi: appApi,
       },
     });
     this.displayPalette = retrieveDisplayPaletteMethod();
@@ -66,6 +75,9 @@ class CommandPal {
         item.handler();
       }
     });
+    // only allow access to appApi if debugging is turned on
+    if (! this.options.debugOutput) { delete(this.appApi);}
+
   }
 
   subscribe(eventName, cb) {
@@ -75,6 +87,29 @@ class CommandPal {
   destroy() {
     this.app.$destroy()
   }
+
+  display(state) { appApi.displayPalette(state) }
+  
+  /* use setter/getter on (virtual) property */
+  get focusedElement() {
+    return appApi.focusedElement()
+  }
+  
+  set focusedElement(newElement) {
+    // try to make new focused element visible
+    appApi.focusedElementFocusVisible.visible = true
+    return appApi.focusedElement(newElement)
+  }
+
+  get Fuse() { return appApi.Fuse }
+
+  // only available if debugOutput is defined
+  appApi = appApi;
+
+  hotkeysGlobal = (enable = true) => {
+    appApi.hotkeysGlobal(enable);
+  }
+  
 }
 
 export default CommandPal;
