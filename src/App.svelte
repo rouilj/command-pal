@@ -37,7 +37,9 @@
   //    / \(\w[\s\w-]*\)$/
   let hintRegexp = / \([ \u0000-\u0019\u0021-\uFFFF_-]+\)$/u;
 
-  const optionsFuse = {
+
+  // FIXME any is wrong, probably need a commands object type.
+  const optionsFuse: Fuse.IFuseOptions<any> = {
     isCaseSensitive: false,
     shouldSort: true,
     keys: ["name", "description", {name: "aliases", weight: 2}],
@@ -81,7 +83,7 @@
   appApi.Fuse = Fuse;
 
   appApi.displayPalette = async active_state => {
-    if (! showModal) {focusedElement = document.activeElement}
+    if (! showModal) {focusedElement = <HTMLElement>document.activeElement}
     if (active_state === undefined) {
       showModal = !showModal;
     } else if ([true, false].includes(active_state)) {
@@ -120,7 +122,7 @@
       onHandleCommand(command);
     });
     storeDisplayPaletteMethod(async active_state => {
-       if (! showModal) {focusedElement = document.activeElement}
+       if (! showModal) {focusedElement = <HTMLElement>document.activeElement}
        if (active_state === undefined) {
        	  showModal = !showModal;
        } else if ([true, false].includes(active_state)) {
@@ -314,7 +316,7 @@
 	focusedElementFocusVisible.visible = true;
       }
       focusedElement.focus(
-	{focusVisible: focusedElementFocusVisible.visible})
+	<FocusOptions>{focusVisible: focusedElementFocusVisible.visible})
     }
   }
 
