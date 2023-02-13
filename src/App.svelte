@@ -73,7 +73,8 @@
   let items = inputData;
   let itemsFiltered = inputData;
   let fuse = new Fuse(items, optionsFuse);
-  let focusedElement;
+  let focusedElement: HTMLElement | null = null;
+  let focusedElementFocusVisible = { visible: false };
 
   onMount(() => {
     initShortCuts(hotkeysGlobal);
@@ -81,14 +82,14 @@
       if (showModal) {
         onClosed()
       } else {
-        focusedElement = document.activeElement
+        focusedElement = <HTMLElement>document.activeElement
         showModal = true;
         selectedIndex = 0;
         dispatch("opened");
       }
     });
     setAllShortCuts(inputData, async command => {
-      focusedElement = document.activeElement
+      focusedElement = <HTMLElement>document.activeElement
       showModal = true;
       dispatch("opened");
       await asyncTimeout(200);
@@ -281,7 +282,17 @@
     if ( ! focusedElement ) {
       console.error("focusedElement not set")
     } else {
-      focusedElement.focus()
+      if ( ['A', 'SUMMARY'].includes(focusedElement.tagName)) {
+	/* If focusedElement is one of these, they do not get focus rings
+	   by default like inputs, selects etc. We want user to know
+	   where focus is when we return so try to activate :focus-visible
+	   styling. So use this standard.
+	   Only implemented in Firefox currently.
+	*/
+	focusedElementFocusVisible.visible = true;
+      }
+      focusedElement.focus(
+	{focusVisible: focusedElementFocusVisible.visible})
     }
   }
 
